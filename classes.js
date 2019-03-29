@@ -66,7 +66,7 @@ class Manager extends Employee {
     this.reports.push(employee);
   }
   fire(i) {
-    this.reports.splice(reports[i], 1);
+    this.reports.splice(i, 1);
   }
 }
 
@@ -92,7 +92,48 @@ class Manager extends Employee {
   Call your new class ProgressiveManager
 */
 
-//Code Here
+class ProgressiveManager extends Manager {
+  constructor(first_name, last_name, email, age, reports) {
+    super(first_name, last_name, email, age, reports);
+    this.title = "Not a manager";
+    this.bonus = 0;
+    this.rep = 0;
+  }
+  
+  titleUpdater() {
+    let rep = this.rep;
+    if (rep < 4 && rep >= 1) {
+      this.title = "Barely Manager";
+    }
+    else if(rep < 11 && rep >= 4) {
+      this.title = "Mostly Manager";
+    }
+    else if(rep < 51 && rep >= 11) {
+      this.title = "Manager";
+    }
+    else if(rep < 101 && rep >= 51) {
+      this.title = "Manager Plus";
+    }
+    else if(rep >= 101) {
+      this.title = "Bestest Manager"
+    }
+    else {
+      this.title = "Not a manager"
+    }
+  }
+
+  hire(employee) {
+    this.reports.push(employee);
+    this.rep += 1;
+    this.titleUpdater();
+  }
+  fire(i) {
+    this.reports.splice(i, 1);
+    this.bonus += 100;
+    this.rep += 1;
+    this.titleUpdater();
+  }
+}
 
 
 
@@ -120,21 +161,22 @@ class Manager extends Employee {
 */
 
 class Machine {
-  constructor(){
+  constructor() {
     this.widgets_made_count = 0;
     this.wear_and_tear_count = 0;
-    this.needs_reboot = 0;
+    this.needs_reboot = false;
   }
   makeWidgets(num) {
     this.widgets_made_count += num;
-    if(widgets_made_count % 50 === 0) {
-      this.wear_and_tear_count += 1;
+    if(this.widgets_made_count % 50 === 0) {
+      this.wear_and_tear_count = this.widgets_made_count/50;
     }
   }
-  fixMachine() {needs_reboot = true}
-  reboot() {
-    wear_and_tear_count -= 10;
-    needs_reboot = false;
+  fixMachine() {this.needs_reboot = true}
+  reboot() {return () => {
+    this.wear_and_tear_count -= 10
+    this.needs_reboot = false
+    }
   }
 }
 
